@@ -31,7 +31,7 @@
             <button type="submit" class="enlace peligro">Cancelar pedido</button>
         </form>
     </div>
-    <p class="estado" th:unless="${admiteCambios}">Este pedido ya no se puede modificar ni cancelar (pasaron diez minutos desde la confirmación o está cancelado).</p>
+    <p class="estado" th:unless="${admiteCambios}">Este pedido ya no se puede modificar ni cancelar (pasaron diez minutos desde la confirmación, el restaurante ya lo ha empezado a preparar o está cancelado).</p>
     <p><a th:href="@{/cliente/pedidos}">Volver a mis pedidos</a></p>
 </main>
 </body>

@@ -2,7 +2,7 @@
 
 Aplicación web de pedidos de comida a domicilio para un restaurante nepalí. Proyecto del Grupo 16 de la asignatura **Ingeniería del Software II** (UPM, ETSI Informáticos, curso 2026-27), desarrollado con Scrum en dos sprints.
 
-Los clientes se registran, consultan la carta y el menú del día, hacen pedidos y siguen su estado. Pueden modificar o cancelar un pedido durante los 10 minutos siguientes a su confirmación. El personal del restaurante gestiona la carta y el menú diario, actualiza el estado de los pedidos y consulta la facturación de cada día.
+Los clientes se registran, consultan la carta y el menú del día, hacen pedidos y siguen su estado. Pueden modificar o cancelar un pedido durante los 10 minutos siguientes a su confirmación, siempre que el restaurante no haya empezado a prepararlo. El personal del restaurante gestiona la carta y el menú diario, actualiza el estado de los pedidos y consulta la facturación de cada día.
 
 ## Tecnologías
 
@@ -26,7 +26,7 @@ Los clientes se registran, consultan la carta y el menú del día, hacen pedidos
 | US8 | Explorar la carta agrupada por categorías y el menú del día | 2 |
 | US9 | Hacer un pedido con productos de la carta y menús del día, con un resumen antes de confirmar | 2 |
 | US10 | Consultar los pedidos propios y su estado | 2 |
-| US11 | Modificar o cancelar un pedido en los 10 minutos siguientes a su confirmación | 2 |
+| US11 | Modificar o cancelar un pedido en los 10 minutos siguientes a su confirmación, mientras siga en estado Recibido | 2 |
 
 ## Puesta en marcha
 
@@ -51,7 +51,7 @@ mvn spring-boot:run -Dspring-boot.run.arguments="--server.port=8081 --app.url-ba
 1. En **Carta (personal)** y **Menú diario (personal)**, revisar la carta y configurar el menú de hoy.
 2. **Registrarse**, abrir el enlace de activación y **entrar**.
 3. En **Mis pedidos → Hacer un pedido**, elegir cantidades, revisar el resumen y confirmar.
-4. Durante 10 minutos, el pedido se puede **modificar** o **cancelar** desde su detalle.
+4. Durante 10 minutos, y mientras siga en Recibido, el pedido se puede **modificar** o **cancelar** desde su detalle.
 5. En **Pedidos (personal)**, cambiar el estado. En **Facturación (personal)**, ver el total del día.
 
 ## Pruebas
@@ -60,7 +60,7 @@ mvn spring-boot:run -Dspring-boot.run.arguments="--server.port=8081 --app.url-ba
 mvn test
 ```
 
-Hay 41 pruebas unitarias (CPU-01 a CPU-41) en `src/test/java`, que usan una base de datos H2 en memoria:
+Hay 42 pruebas unitarias (CPU-01 a CPU-42) en `src/test/java`, que usan una base de datos H2 en memoria:
 
 | Clase | Pruebas | Qué cubre |
 |---|---|---|
@@ -68,7 +68,7 @@ Hay 41 pruebas unitarias (CPU-01 a CPU-41) en `src/test/java`, que usan una base
 | `MenuServiceTest` | 6 | Configuración y consulta del menú del día (US2) |
 | `ClienteServiceTest` | 8 | Registro, activación e inicio de sesión (US5-US7) |
 | `CifradoContrasenasTest` | 1 | Hash de contraseñas con sal |
-| `PedidoServiceTest` | 16 | Pedidos, estados, plazo de 10 minutos y facturación (US3, US4, US9-US11) |
+| `PedidoServiceTest` | 17 | Pedidos, estados, plazo de 10 minutos (también con el pedido ya en preparación) y facturación (US3, US4, US9-US11) |
 | `CantidadesPedidoTest` | 2 | Lectura de las cantidades del formulario de pedido |
 | `CartaPorCategoriaTest` | 2 | Carta agrupada por categorías (US8) |
 

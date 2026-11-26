@@ -104,7 +104,7 @@ Las pantallas del personal no tienen autenticación en esta versión.
 - Solo se pueden pedir productos que estén en la carta y menús de días configurados.
 - Antes de confirmar se muestra un resumen con los conceptos y el total.
 - Un cliente solo ve sus propios pedidos: el de otro cliente se trata como si no existiera.
-- Un pedido se puede **modificar o cancelar hasta 10 minutos después de confirmarlo** (incluido el minuto 10). Al modificarlo se recalcula el importe. Un pedido cancelado ya no admite cambios.
+- Un pedido se puede **modificar o cancelar hasta 10 minutos después de confirmarlo** (incluido el minuto 10) **y solo mientras siga en Recibido**: si el restaurante ya lo ha pasado a En preparación, En reparto o Entregado, se rechaza el cambio aunque no hayan pasado los 10 minutos. Al modificarlo se recalcula el importe. Un pedido cancelado ya no admite cambios.
 
 **Estados (US3)**
 - El personal puede poner los estados Recibido, En preparación, En reparto y Entregado. Cambiar un pedido no afecta a los demás.

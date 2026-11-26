@@ -125,7 +125,7 @@ public class PedidoClienteController {
             Pedido pedido = pedidos.obtenerDelCliente(clienteId, id);
             if (!pedidos.admiteCambios(pedido)) {
                 redirect.addFlashAttribute("error", "No se puede modificar el pedido " + id
-                        + ": ya han pasado diez minutos desde que se confirmó o está cancelado.");
+                        + ": pasaron diez minutos desde la confirmación, el restaurante ya lo ha empezado a preparar o está cancelado.");
                 return "redirect:/cliente/pedidos/" + id;
             }
             prepararFormulario(model, cantidadesDe(pedido), "/cliente/pedidos/" + id + "/modificar", "Guardar cambios");

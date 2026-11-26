@@ -85,10 +85,13 @@ public class PedidoService {
         return propio(clienteId, pedidoId);
     }
 
-    /** Indica si todavía se puede modificar o cancelar el pedido. */
+    /**
+     * Indica si todavía se puede modificar o cancelar el pedido: dentro de los diez minutos
+     * y mientras siga Recibido (si el restaurante ya lo prepara, reparte o entrega, no).
+     */
     @Transactional(readOnly = true)
     public boolean admiteCambios(Pedido pedido) {
-        if (pedido.getEstado() == EstadoPedido.CANCELADO) {
+        if (pedido.getEstado() != EstadoPedido.RECIBIDO) {
             return false;
         }
         Duration transcurrido = Duration.between(pedido.getFechaHora(), LocalDateTime.now(reloj));
@@ -178,6 +181,10 @@ public class PedidoService {
     private void comprobarPlazo(Pedido pedido, String accion) {
         if (pedido.getEstado() == EstadoPedido.CANCELADO) {
             throw new ReglaNegocioException("El pedido " + pedido.getId() + " ya está cancelado.");
+        }
+        if (pedido.getEstado() != EstadoPedido.RECIBIDO) {
+            throw new ReglaNegocioException("No se puede " + accion + " el pedido " + pedido.getId()
+                    + ": el restaurante ya lo ha pasado a \"" + pedido.getEstado().getEtiqueta() + "\".");
         }
         if (!admiteCambios(pedido)) {
             throw new ReglaNegocioException("No se puede " + accion + " el pedido " + pedido.getId()

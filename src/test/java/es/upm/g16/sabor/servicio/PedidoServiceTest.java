@@ -210,6 +210,19 @@ class PedidoServiceTest {
     }
 
     @Test
+    @DisplayName("CPU-42 Modificar o cancelar dentro de los 10 minutos un pedido que ya no está Recibido: se rechaza")
+    void noSePuedeCambiarUnPedidoEnPreparacion() {
+        Pedido pedido = pedidos.confirmar(ana.getId(), pedirMomos(1));
+        reloj.avanzar(Duration.ofMinutes(2));
+        pedidos.cambiarEstado(pedido.getId(), EstadoPedido.EN_PREPARACION);
+        assertFalse(pedidos.admiteCambios(pedido));
+        assertThrows(ReglaNegocioException.class, () -> pedidos.cancelar(ana.getId(), pedido.getId()));
+        assertThrows(ReglaNegocioException.class,
+                () -> pedidos.modificar(ana.getId(), pedido.getId(), pedirMomos(1)));
+        assertEquals(EstadoPedido.EN_PREPARACION, pedidos.obtener(pedido.getId()).getEstado());
+    }
+
+    @Test
     @DisplayName("CPU-35 Facturación de un día: suma los pedidos de ese día y excluye los cancelados")
     void facturacionDelDia() {
         pedidos.confirmar(ana.getId(), pedirMomos(2));                                  // 13,00
