@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Pedido')}"></head>
+<body>
+<header th:replace="~{fragmentos :: cabecera}"></header>
+<main>
+    <h1 th:text="${idPedido != null} ? 'Modificar el pedido ' + ${idPedido} : 'Nuevo pedido'">Nuevo pedido</h1>
+    <div th:replace="~{fragmentos :: avisos}"></div>
+    <form th:action="@{${accion}}" method="post" class="formulario ancho">
+        <fieldset>
+            <legend>Menú del día (15 €)</legend>
+            <p class="aviso error" th:unless="${hayMenu}">Hoy no hay menú del día configurado: no se puede pedir.</p>
+            <label th:if="${hayMenu}">Número de menús
+                <input type="number" name="menus" min="0" max="20" th:value="${cantidades.menus}">
+            </label>
+        </fieldset>
+        <fieldset th:each="categoria : ${porCategoria}">
+            <legend th:text="${categoria.key.etiqueta}">Categoría</legend>
+            <label th:each="p : ${categoria.value}">
+                <span><span th:text="${p.nombre}">Plato</span> ·
+                    <span th:text="${#numbers.formatDecimal(p.precio, 1, 2, 'COMMA')} + ' €'">6,50 €</span></span>
+                <input type="number" min="0" max="20" th:name="'p_' + ${p.id}"
+                       th:value="${cantidades.productos[p.id] ?: 0}">
+            </label>
+        </fieldset>
+        <div class="botones">
+            <button type="submit" class="boton" th:text="${boton}">Revisar pedido</button>
+            <a th:href="@{/cliente/pedidos}">Volver</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

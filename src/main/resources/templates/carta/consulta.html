@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Carta')}"></head>
+<body>
+<header th:replace="~{fragmentos :: cabecera}"></header>
+<main>
+    <h1>Nuestra carta</h1>
+    <p><a th:href="@{/menu-del-dia}">Ver el menú del día (15 €)</a> ·
+        <a th:href="@{/cliente/pedidos/nuevo}">Hacer un pedido</a></p>
+    <p th:if="${#maps.isEmpty(porCategoria)}">La carta está vacía.</p>
+    <section th:each="categoria : ${porCategoria}" class="tarjeta">
+        <h2 th:text="${categoria.key.etiqueta}">Categoría</h2>
+        <table>
+            <thead><tr><th>Producto</th><th>Descripción</th><th class="num">Precio</th></tr></thead>
+            <tbody>
+            <tr th:each="p : ${categoria.value}">
+                <td th:text="${p.nombre}">Momos</td>
+                <td th:text="${p.descripcion}">Descripción</td>
+                <td class="num" th:text="${#numbers.formatDecimal(p.precio, 1, 2, 'COMMA')} + ' €'">6,50 €</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

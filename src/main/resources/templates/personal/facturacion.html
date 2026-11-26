@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Facturación')}"></head>
+<body>
+<header th:replace="~{fragmentos :: cabecera}"></header>
+<main>
+    <h1>Facturación diaria</h1>
+    <form th:action="@{/personal/facturacion}" method="get" class="en-linea">
+        <label>Fecha <input type="date" name="fecha" th:value="${fecha}"></label>
+        <button type="submit" class="boton secundario">Consultar</button>
+    </form>
+    <section class="tarjeta">
+        <h2 th:text="'Pedidos del ' + ${#temporals.format(factura.fecha, 'dd/MM/yyyy')}">Pedidos del día</h2>
+        <p>Pedidos contados (sin cancelados): <strong th:text="${factura.numeroPedidos}">0</strong></p>
+        <p>Total facturado: <strong th:text="${#numbers.formatDecimal(factura.total, 1, 2, 'COMMA')} + ' €'">0,00 €</strong></p>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Mis pedidos')}"></head>
+<body>
+<header th:replace="~{fragmentos :: cabecera}"></header>
+<main>
+    <h1>Mis pedidos</h1>
+    <div th:replace="~{fragmentos :: avisos}"></div>
+    <p><a class="boton" th:href="@{/cliente/pedidos/nuevo}">Hacer un pedido</a></p>
+    <p th:if="${#lists.isEmpty(pedidos)}">Todavía no has hecho ningún pedido.</p>
+    <table th:unless="${#lists.isEmpty(pedidos)}">
+        <thead><tr><th>Nº</th><th>Fecha</th><th>Estado</th><th class="num">Importe</th><th></th></tr></thead>
+        <tbody>
+        <tr th:each="p : ${pedidos}">
+            <td th:text="${p.id}">1</td>
+            <td th:text="${#temporals.format(p.fechaHora, 'dd/MM/yyyy HH:mm')}">01/01/2026 12:00</td>
+            <td th:text="${p.estado.etiqueta}">Recibido</td>
+            <td class="num" th:text="${#numbers.formatDecimal(p.importeTotal, 1, 2, 'COMMA')} + ' €'">0,00 €</td>
+            <td><a th:href="@{/cliente/pedidos/{id}(id=${p.id})}">Ver</a></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

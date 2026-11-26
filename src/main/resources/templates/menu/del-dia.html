@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Menú del día')}"></head>
+<body>
+<header th:replace="~{fragmentos :: cabecera}"></header>
+<main>
+    <h1>Menú del día</h1>
+    <form th:action="@{/menu-del-dia}" method="get" class="en-linea">
+        <label>Fecha <input type="date" name="fecha" th:value="${fecha}"></label>
+        <button type="submit" class="boton secundario">Ver</button>
+    </form>
+    <p th:text="${#temporals.format(fecha, 'dd/MM/yyyy')}">01/01/2026</p>
+    <p class="aviso error" th:if="${menu == null}">Ese día no hay menú del día configurado, así que no se puede pedir. Puedes pedir de la carta.</p>
+    <div th:if="${menu != null}" class="tarjetas">
+        <section class="tarjeta">
+            <h2>Entrantes</h2>
+            <ul><li th:each="p : ${menu.entrantes}" th:text="${p.nombre}">Plato</li></ul>
+        </section>
+        <section class="tarjeta">
+            <h2>Principales</h2>
+            <ul><li th:each="p : ${menu.principales}" th:text="${p.nombre}">Plato</li></ul>
+        </section>
+        <section class="tarjeta">
+            <h2>Postres</h2>
+            <ul><li th:each="p : ${menu.postres}" th:text="${p.nombre}">Plato</li></ul>
+        </section>
+        <section class="tarjeta">
+            <h2>Bebida</h2>
+            <p th:text="${menu.bebida != null} ? ${menu.bebida.nombre} : '-'">Agua</p>
+            <p><strong th:text="${#numbers.formatDecimal(menu.precio, 1, 2, 'COMMA')} + ' €'">15,00 €</strong></p>
+        </section>
+    </div>
+    <p th:if="${menu != null and esHoy}"><a class="boton" th:href="@{/cliente/pedidos/nuevo}">Pedir ahora</a></p>
+</main>
+</body>
+</html>

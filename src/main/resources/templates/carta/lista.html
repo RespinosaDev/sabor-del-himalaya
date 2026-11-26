@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Carta')}"></head>
+<body>
+<header th:replace="~{fragmentos :: cabecera}"></header>
+<main>
+    <h1>Gestión de la carta</h1>
+    <div th:replace="~{fragmentos :: avisos}"></div>
+    <p><a class="boton" th:href="@{/personal/carta/nuevo}">Añadir producto</a></p>
+    <p th:if="${#lists.isEmpty(productos)}">La carta está vacía.</p>
+    <table th:unless="${#lists.isEmpty(productos)}">
+        <thead>
+        <tr><th>Producto</th><th>Categoría</th><th>Descripción</th><th class="num">Precio</th><th></th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${productos}">
+            <td th:text="${p.nombre}">Momos</td>
+            <td th:text="${p.categoria.etiqueta}">Entrante</td>
+            <td th:text="${p.descripcion}">Descripción</td>
+            <td class="num" th:text="${#numbers.formatDecimal(p.precio, 1, 2, 'COMMA')} + ' €'">6,50 €</td>
+            <td class="acciones">
+                <a th:href="@{/personal/carta/{id}/editar(id=${p.id})}">Modificar</a>
+                <form th:action="@{/personal/carta/{id}/retirar(id=${p.id})}" method="post" class="en-linea"
+                      onsubmit="return confirm('¿Retirar este producto de la carta?');">
+                    <button type="submit" class="enlace peligro">Retirar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

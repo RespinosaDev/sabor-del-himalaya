@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Activación')}"></head>
+<body>
+<header th:replace="~{fragmentos :: cabecera}"></header>
+<main>
+    <h1>Activación de la cuenta</h1>
+    <div th:if="${activada}">
+        <p class="aviso ok" th:text="'¡Cuenta activada! Bienvenido, ' + ${nombre} + '.'">Cuenta activada</p>
+        <p><a class="boton" th:href="@{/login}">Iniciar sesión</a></p>
+    </div>
+    <div th:unless="${activada}">
+        <p class="aviso error" th:text="${error}">Enlace no válido</p>
+    </div>
+</main>
+</body>
+</html>

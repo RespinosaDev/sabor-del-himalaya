@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Producto')}"></head>
+<body>
+<header th:replace="~{fragmentos :: cabecera}"></header>
+<main>
+    <h1 th:text="${idProducto == null} ? 'Añadir producto' : 'Modificar producto'">Producto</h1>
+    <div th:replace="~{fragmentos :: avisos}"></div>
+    <form th:object="${producto}" method="post"
+          th:action="${idProducto == null} ? @{/personal/carta/nuevo} : @{/personal/carta/{id}/editar(id=${idProducto})}"
+          class="formulario">
+        <label>Nombre
+            <input type="text" th:field="*{nombre}" maxlength="80" required>
+        </label>
+        <label>Descripción
+            <textarea th:field="*{descripcion}" maxlength="300" rows="3"></textarea>
+        </label>
+        <label>Categoría
+            <select th:field="*{categoria}" required>
+                <option value="">Seleccionar</option>
+                <option th:each="c : ${categorias}" th:value="${c}" th:text="${c.etiqueta}">Entrante</option>
+            </select>
+        </label>
+        <label>Precio (€)
+            <input type="number" th:field="*{precio}" min="0" step="0.01" required>
+        </label>
+        <label class="casilla">
+            <input type="checkbox" th:field="*{enCarta}"> Se ofrece en la carta
+        </label>
+        <div class="botones">
+            <button type="submit" class="boton">Guardar</button>
+            <a th:href="@{/personal/carta}">Cancelar</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

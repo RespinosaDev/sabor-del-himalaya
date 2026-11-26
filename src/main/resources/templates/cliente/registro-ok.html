@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Registro completado')}"></head>
+<body>
+<header th:replace="~{fragmentos :: cabecera}"></header>
+<main>
+    <h1>¡Ya casi está!</h1>
+    <p class="aviso ok">
+        Hemos enviado un enlace de activación a <strong th:text="${cliente.email}">correo</strong>.
+        Tu cuenta no estará activa hasta que entres en ese enlace.
+    </p>
+    <p th:if="${enlace != null}" class="nota">
+        Entorno de desarrollo: <a th:href="${enlace}" th:text="${enlace}">enlace</a>
+    </p>
+</main>
+</body>
+</html>

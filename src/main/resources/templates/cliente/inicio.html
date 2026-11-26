@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Mi cuenta')}"></head>
+<body>
+<header th:replace="~{fragmentos :: cabecera}"></header>
+<main>
+    <h1 th:text="'Hola, ' + ${nombre}">Hola</h1>
+    <p>Has iniciado sesión correctamente.</p>
+    <p><a th:href="@{/menu-del-dia}">Ver el menú del día</a></p>
+    <p><a th:href="@{/cliente/pedidos/nuevo}">Hacer un pedido</a></p>
+    <p><a th:href="@{/cliente/pedidos}">Ver mis pedidos</a></p>
+</main>
+</body>
+</html>

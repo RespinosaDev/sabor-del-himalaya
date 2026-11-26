@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Pedidos')}"></head>
+<body>
+<header th:replace="~{fragmentos :: cabecera}"></header>
+<main>
+    <h1>Pedidos (personal)</h1>
+    <div th:replace="~{fragmentos :: avisos}"></div>
+    <p th:if="${#lists.isEmpty(pedidos)}">No hay pedidos.</p>
+    <table th:unless="${#lists.isEmpty(pedidos)}">
+        <thead><tr><th>Nº</th><th>Cliente</th><th>Fecha</th><th class="num">Importe</th><th>Estado</th></tr></thead>
+        <tbody>
+        <tr th:each="p : ${pedidos}">
+            <td th:text="${p.id}">1</td>
+            <td th:text="${p.cliente.nombre}">Cliente</td>
+            <td th:text="${#temporals.format(p.fechaHora, 'dd/MM/yyyy HH:mm')}">01/01/2026 12:00</td>
+            <td class="num" th:text="${#numbers.formatDecimal(p.importeTotal, 1, 2, 'COMMA')} + ' €'">0,00 €</td>
+            <td>
+                <span th:if="${p.estado.name() == 'CANCELADO'}" th:text="${p.estado.etiqueta}">Cancelado</span>
+                <form th:unless="${p.estado.name() == 'CANCELADO'}" th:action="@{/personal/pedidos/{id}/estado(id=${p.id})}"
+                      method="post" class="en-linea">
+                    <select name="estado">
+                        <option th:each="e : ${estados}" th:value="${e}" th:text="${e.etiqueta}"
+                                th:selected="${e == p.estado}">Recibido</option>
+                    </select>
+                    <button type="submit" class="boton secundario">Guardar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

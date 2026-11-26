@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="cabeza(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo} + ' · Sabor del Himalaya'">Sabor del Himalaya</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<header th:fragment="cabecera" class="cabecera">
+    <a class="marca" th:href="@{/}">Sabor del Himalaya</a>
+    <nav>
+        <a th:href="@{/carta}">Carta</a>
+        <a th:href="@{/menu-del-dia}">Menú del día</a>
+        <a th:href="@{/personal/carta}">Carta (personal)</a>
+        <a th:href="@{/personal/menu}">Menú diario (personal)</a>
+        <a th:href="@{/personal/pedidos}">Pedidos (personal)</a>
+        <a th:href="@{/personal/facturacion}">Facturación (personal)</a>
+        <th:block th:if="${clienteNombre == null}">
+            <a th:href="@{/registro}">Registrarse</a>
+            <a th:href="@{/login}">Entrar</a>
+        </th:block>
+        <th:block th:if="${clienteNombre != null}">
+            <a th:href="@{/cliente/pedidos}">Mis pedidos</a>
+            <a th:href="@{/cliente}" th:text="${clienteNombre}">Cliente</a>
+            <form th:action="@{/logout}" method="post" class="en-linea">
+                <button type="submit" class="enlace">Salir</button>
+            </form>
+        </th:block>
+    </nav>
+</header>
+<div th:fragment="avisos">
+    <p class="aviso ok" th:if="${mensaje}" th:text="${mensaje}">Mensaje</p>
+    <p class="aviso error" th:if="${error}" th:text="${error}">Error</p>
+</div>
+</body>
+</html>

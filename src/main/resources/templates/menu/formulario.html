@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Menú diario')}"></head>
+<body>
+<header th:replace="~{fragmentos :: cabecera}"></header>
+<main>
+    <h1>Menú diario</h1>
+    <div th:replace="~{fragmentos :: avisos}"></div>
+
+    <form th:action="@{/personal/menu}" method="get" class="en-linea">
+        <label>Fecha <input type="date" name="fecha" th:value="${fecha}"></label>
+        <button type="submit" class="boton secundario">Ver</button>
+    </form>
+
+    <p class="estado" th:if="${menu == null}" th:text="'El ' + ${fechaTexto} + ' todavía no tiene menú.'">Sin menú</p>
+    <p class="estado" th:if="${menu != null and !menu.configurado}"
+       th:text="'El ' + ${fechaTexto} + ' está marcado como día sin menú.'">Sin menú</p>
+    <p class="estado ok" th:if="${menu != null and menu.configurado}"
+       th:text="'Menú del ' + ${fechaTexto} + ' configurado. Precio: ' + ${#numbers.formatDecimal(precioMenu, 1, 2, 'COMMA')} + ' €'">Configurado</p>
+
+    <form th:action="@{/personal/menu/guardar}" method="post" class="formulario ancho">
+        <input type="hidden" name="fecha" th:value="${fecha}">
+        <fieldset>
+            <legend>Entrantes / ensaladas (elegir 3)</legend>
+            <label class="casilla" th:each="p : ${opcionesEntrantes}">
+                <input type="checkbox" name="entrantes" th:value="${p.id}" th:checked="${#lists.contains(selEntrantes, p.id)}">
+                <span th:text="${p.nombre}">Plato</span> <small th:unless="${p.enCarta}">(fuera de carta)</small>
+            </label>
+        </fieldset>
+        <fieldset>
+            <legend>Platos principales (elegir 3)</legend>
+            <label class="casilla" th:each="p : ${opcionesPrincipales}">
+                <input type="checkbox" name="principales" th:value="${p.id}" th:checked="${#lists.contains(selPrincipales, p.id)}">
+                <span th:text="${p.nombre}">Plato</span> <small th:unless="${p.enCarta}">(fuera de carta)</small>
+            </label>
+        </fieldset>
+        <fieldset>
+            <legend>Postres (elegir 2)</legend>
+            <label class="casilla" th:each="p : ${opcionesPostres}">
+                <input type="checkbox" name="postres" th:value="${p.id}" th:checked="${#lists.contains(selPostres, p.id)}">
+                <span th:text="${p.nombre}">Plato</span> <small th:unless="${p.enCarta}">(fuera de carta)</small>
+            </label>
+        </fieldset>
+        <fieldset>
+            <legend>Bebida incluida</legend>
+            <select name="bebida">
+                <option value="">Seleccionar</option>
+                <option th:each="b : ${opcionesBebidas}" th:value="${b.id}" th:text="${b.nombre}"
+                        th:selected="${selBebida != null and selBebida == b.id}">Agua</option>
+            </select>
+        </fieldset>
+        <p>Precio del menú: <strong th:text="${#numbers.formatDecimal(precioMenu, 1, 2, 'COMMA')} + ' €'">15,00 €</strong></p>
+        <div class="botones">
+            <button type="submit" class="boton">Guardar menú</button>
+        </div>
+    </form>
+
+    <form th:action="@{/personal/menu/sin-configurar}" method="post" class="en-linea">
+        <input type="hidden" name="fecha" th:value="${fecha}">
+        <button type="submit" class="boton secundario">Dejar este día sin menú</button>
+    </form>
+
+    <h2>Nuevo plato fuera de carta</h2>
+    <p>El plato queda guardado y se puede usar en los menús de otros días.</p>
+    <form th:action="@{/personal/menu/plato}" method="post" class="formulario">
+        <input type="hidden" name="fecha" th:value="${fecha}">
+        <label>Nombre <input type="text" name="nombre" maxlength="80" required></label>
+        <label>Descripción <input type="text" name="descripcion" maxlength="300"></label>
+        <label>Categoría
+            <select name="categoria" required>
+                <option value="">Seleccionar</option>
+                <option th:each="c : ${categoriasPlato}" th:value="${c}" th:text="${c.etiqueta}">Entrante</option>
+            </select>
+        </label>
+        <div class="botones"><button type="submit" class="boton secundario">Crear plato</button></div>
+    </form>
+</main>
+</body>
+</html>

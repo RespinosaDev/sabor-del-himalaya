@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Inicio')}"></head>
+<body>
+<header th:replace="~{fragmentos :: cabecera}"></header>
+<main>
+    <h1>Bienvenido a Sabor del Himalaya</h1>
+    <p>Cocina nepalí a domicilio.</p>
+    <div class="tarjetas">
+        <section class="tarjeta">
+            <h2>Clientes</h2>
+            <p><a th:href="@{/carta}">Ver la carta</a></p>
+            <p><a th:href="@{/menu-del-dia}">Ver el menú del día</a></p>
+            <p><a th:href="@{/registro}">Crear una cuenta</a></p>
+            <p><a th:href="@{/login}">Iniciar sesión</a></p>
+        </section>
+        <section class="tarjeta">
+            <h2>Personal del restaurante</h2>
+            <p><a th:href="@{/personal/carta}">Gestionar la carta</a></p>
+            <p><a th:href="@{/personal/menu}">Configurar el menú diario</a></p>
+            <p><a th:href="@{/personal/pedidos}">Actualizar el estado de los pedidos</a></p>
+            <p><a th:href="@{/personal/facturacion}">Consultar la facturación diaria</a></p>
+        </section>
+    </div>
+</main>
+</body>
+</html>
